@@ -1,9 +1,8 @@
-import klite.*
-import klite.annotations.annotated
-
+import klite.AssetsHandler
+import klite.Config
+import klite.Server
 import klite.json.JsonBody
-
-import kotlinx.coroutines.delay
+import klite.register
 import java.net.InetSocketAddress
 import java.net.http.HttpClient
 import java.nio.file.Path
@@ -21,13 +20,9 @@ fun sampleServer(port: Int = 8080) = Server(listen = InetSocketAddress(port)).ap
 
     register(HttpClient.newBuilder().connectTimeout(ofSeconds(5)).build())
 
-    context("/hello") {
-        get { "Hello World" }
+    context("/api") {
 
-        get("/delay") {
-            delay(1000)
-            "Waited for 1 sec"
-        }
+        get { "Hello World" }
 
         get("/failure") { error("Failure") }
 
@@ -38,11 +33,4 @@ fun sampleServer(port: Int = 8080) = Server(listen = InetSocketAddress(port)).ap
 
     }
 
-    context("/api") {
-        useOnly<JsonBody>() // in case only json should be supported in this context
-        before(CorsHandler()) // enable CORS for this context, so that Swagger-UI can access the API
-        useHashCodeAsETag() // automatically send 304 NotModified if request generates the same response as before
-        annotated<MyRoutes>() // read routes from an annotated class - such classes are easier to unit-test
-
-    }
 }

@@ -25,7 +25,6 @@ testing {
         val test by getting(JvmTestSuite::class) {
             useJUnitJupiter()
             dependencies {
-                implementation("ch.tutteli.atrium:atrium-assertions:1.0.0")
                 implementation("org.jetbrains.kotlin:kotlin-test")
             }
         }
