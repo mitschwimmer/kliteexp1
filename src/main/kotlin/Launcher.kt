@@ -22,7 +22,7 @@ fun sampleServer(port: Int = 8080) = Server(listen = InetSocketAddress(port)).ap
 
     context("/api") {
 
-        get { "Hello World" }
+        get("/json-test") { TestResponse(hello = "test") }
 
         get("/failure") { error("Failure") }
 
@@ -34,3 +34,5 @@ fun sampleServer(port: Int = 8080) = Server(listen = InetSocketAddress(port)).ap
     }
 
 }
+
+data class TestResponse(val hello: String)
